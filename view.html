@@ -71,7 +71,9 @@
             
             livestant.getRoomUrl(function (res) {
                 var url = GOOGL + res.url;
-                frame.src = url;
+                frame.element.src = url;
+                console.log(url);
+                frame.appendTo();
             },
             function (e) {
                 toTop(e);
