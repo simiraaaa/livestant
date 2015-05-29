@@ -75,11 +75,12 @@ a{
 
 .rooms{
     padding:10px;
-    width:600px;
+    width:60%;
     margin:0 auto;
 }
 
 .roomTitle {
+    word-wrap:break-word;
     font-weight:bold;
 }
 
