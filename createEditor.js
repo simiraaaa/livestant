@@ -36,6 +36,7 @@ livestant
         \<meta charset=\"UTF-8\" /\>\n\
         \<meta name=\"viewport\" content=\"width=device-width, user-scalable=no\" /\>\n\
         \<meta name=\"apple-mobile-web-app-capable\" content=\"yes\" /\>\n\
+    \<link href=\"http://simiraaaa.github.io/livestant/favicon.ico\" rel=\"shortcut icon\" type=\"image/x-icon\" /\>\n\
         \<title\>livestant | editor\</title\>\n\
 \</head\>\n\
 \<body\>\n\
