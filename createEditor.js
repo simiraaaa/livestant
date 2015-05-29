@@ -46,6 +46,8 @@ livestant
     var isAlpha = !!rs;
     var isBeta = !!runstant;
 
+    window.onmessage = null;
+    window.onload = null;
 
     // id editpass
     var qs = window.location.search.substring(1);
