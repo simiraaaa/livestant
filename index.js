@@ -54,15 +54,17 @@
     var submitButton = createForm.create('div').create('button').attribute({
         type:'button'
     }).on('click', function () {
+        submitButton.noneDisp();
         livestant.createRoom(
             function () {
                 removePopup();
                 getRooms();
-                message.element.textContent = 'ルームの作成の成功しました。';
-                message.showDisp();
-                setTimeout(function () {message.noneDisp() },2000);
+                showMessage( 'ルームの作成の成功しました。');
             },
-            function (e) { alert(e);},
+            function (e) {
+                submitButton.showDisp();
+                alert(e);
+            },
             {
                 title: titleText.value,
                 edit: editPassText.value,
@@ -71,10 +73,21 @@
             );
     });
 
+    function showMessage(mes){
+        
+        message.element.textContent =mes;
+        message.setStyle({
+            top: '10%',
+            left: '40%',
+        });
+        message.showDisp();
+        setTimeout(function () {message.noneDisp() },2000);
+    }
+
     submitButton.element.textContent = '作成';
 
     var blackRect = smr.dom.Element('div')
-        .absolute(0, 0)
+        .fixed(0, 0)
         .setStyle({
             width: '100%',
             height: '100%',
@@ -117,6 +130,10 @@
     }
 
     function popupCreate() {
+        submitButton.showDisp();
+        lookPassText.value = "";
+        editPassText.value = "";
+        titleText.value = "";
         popup(createForm);
     }
     function removePopup() {
@@ -128,13 +145,121 @@
 
     }
 
+
+    var roomList = [];
+
     function getRooms() {
         rooms.removeChildAll();
+        roomList.length = 0;
         livestant.getRooms(function (d) {
-            console.log(d);
+            d.forEach(addRoom);
         })
     }
 
+    function addRoom(room) {
+        var id = room.id;
+        var title = room.title;
+        var lookFree = room.lookFree;
+        var editFree = room.editFree;
+
+        var div = smr.dom.Element('div');
+        div.element.className = 'roomDiv';
+        div.create('div').attribute({
+            textContent: title,
+            className:'roomTitle'
+        });
+
+
+        div.create('span').attribute({
+            textContent: '編集' + (editFree ? '(Free)' : ''),
+            className: 'spanButton' + (editFree ? ' blue' : ''),
+        }).setStyle({
+            margin: '0 5px'
+        });
+
+        div.create('span').attribute({
+            textContent: '閲覧' + (lookFree ? '(Free)' : ''),
+            className: 'spanButton' + (lookFree ? ' blue' : ''),
+        }).setStyle({
+            margin:'0 5px'
+        });
+
+
+        div.create('span').attribute({
+            textContent: '削除' + (editFree ? '(Free)' : ''),
+            className: 'spanButton' + (editFree ? ' blue' : ''),
+        }).setStyle({
+            margin: '0 5px'
+        }).onclick = function () {
+            if (editFree) return deleteRoom(id);
+            popupDelete(id);
+        };
+
+        rooms.append(div);
+        roomList.push(div);
+    }
+
+
+    var deleteForm = smr.dom.Element('div');
+    deleteForm.element.className = "createForm";
+
+    deleteForm.create('span').setStyle({
+        fontSize: '24px',
+        fontWeight: 'bold',
+    }).element.textContent = 'ルームを削除します';
+
+    deleteForm.create('hr');
+
+    deleteForm.create('div').element.textContent = '編集パスワード';
+
+
+    var deletePassText = deleteForm.create('input').attribute({
+        type: 'text',
+    }).setStyle({
+        width: '50%'
+    });
+    var deleteIdHidden = deleteForm.create('input').attribute({
+        type: 'hidden',
+    });
+
+    var deleteButton = deleteForm.create('div').create('button').attribute({
+        type: 'button',
+        textContent:'削除'
+    }).on('click', function () {
+        deleteButton.noneDisp();
+        var no_cancel=deleteRoom(deleteIdHidden.value,deletePassText.value,
+            function () {
+                removePopup();
+            },
+            function () {
+                deleteButton.showDisp();
+            }
+            );
+        no_cancel || deleteButton.showDisp();
+    });
+
+
+    function popupDelete(id) {
+        deleteButton.showDisp();
+        deletePassText.value = "";
+        deleteIdHidden.value = id;
+        popup(deleteForm);
+    }
+
+    function deleteRoom(id,edit,success,error){
+        if(!window.confirm('本当に削除しますか?')){return false;}
+        livestant.deleteRoom(function(){
+            showMessage('ルームの削除に成功しました');
+            getRooms();
+            success && success();
+        },
+        function(e){
+            alert(e);
+            error && error();
+        },{id:id,edit:edit});
+
+        return true;
+    }
 
     getRooms();
 

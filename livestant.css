@@ -17,6 +17,7 @@ html{
     left:0px;
     padding:5px;
     background:#002456;
+    z-index:5;
 }
 
 a{
@@ -63,3 +64,39 @@ a{
     padding:20px;
 
 }
+
+.red{
+    color:red;
+}
+
+.blue{
+    color:blue;
+}
+
+.rooms{
+    padding:10px;
+    width:800px;
+    margin:0 auto;
+}
+
+.roomTitle {
+    font-weight:bold;
+}
+
+.roomDiv{
+    padding:5px;
+    margin:5px auto;
+    border-bottom:1px solid rgba(0,0,0,0.5);
+    position:relative;
+    text-align:center;
+    background:white;
+}
+
+.spanButton {
+    cursor:pointer;
+    background:white;
+    border-bottom:2px solid black;
+    padding:0 2px;
+}
+
+
