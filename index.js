@@ -64,11 +64,12 @@
 
     var lookFormButton = lookForm.create('div').create('button').attribute({
         type: 'button',
-        textContent: '編集'
+        textContent: '表示'
     }).on('click', function () {
         lookFormButton.noneDisp();
         lookRoom();
     });
+
 
     function lookRoom(popup) {
         popup = popup === undefined ? true : popup;
@@ -92,6 +93,16 @@
             );
     }
 
+
+    function popupLook(id, free) {
+        lookFormButton.showDisp();
+        lkLookPassText.value = "";
+        lkIdHidden.value = id;
+        free = free === undefined ? 1 : free;
+        if (free) return lookRoom(false);
+
+        popup(lookForm);
+    }
 
 
     var editForm = smr.dom.Element('div');
@@ -335,7 +346,9 @@
             className: 'spanButton' + (lookFree ? ' blue' : ''),
         }).setStyle({
             margin:'0 5px'
-        });
+        }).onclick = function () {
+            popupLook(id, lookFree);
+        };
 
 
         div.create('span').attribute({
