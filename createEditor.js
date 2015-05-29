@@ -155,7 +155,7 @@ livestant
 
 
                 //---add
-                window.util.shorten(location.href, function (url) { update(url); });
+                window.util.shorten(window.location.href, function (url) { update(url); });
                 //---
 
             }
