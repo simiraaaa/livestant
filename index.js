@@ -37,6 +37,63 @@
     var versionQs = null;
 
 
+
+    var lookForm = smr.dom.Element('div');
+    lookForm.element.className = "createForm";
+
+    lookForm.create('span').setStyle({
+        fontSize: '24px',
+        fontWeight: 'bold',
+    }).element.textContent = '閲覧します';
+
+    lookForm.create('hr');
+
+    lookForm.create('div').element.textContent = '閲覧パスワード';
+
+
+    var lkLookPassText = lookForm.create('input').attribute({
+        type: 'text',
+    }).setStyle({
+        width: '50%'
+    });
+    var lkIdHidden = lookForm.create('input').attribute({
+        type: 'hidden'
+    });
+
+
+
+    var lookFormButton = lookForm.create('div').create('button').attribute({
+        type: 'button',
+        textContent: '編集'
+    }).on('click', function () {
+        lookFormButton.noneDisp();
+        lookRoom();
+    });
+
+    function lookRoom(popup) {
+        popup = popup === undefined ? true : popup;
+        livestant.getRoomUrl(
+            function (res) {
+                popup && removePopup();
+                location.href = livestant.safeAddQuery('view', {
+                    id: lkIdHidden.value,
+                    look: res.look,
+                    url: res.url
+                });
+            },
+            function (e) {
+                lookFormButton.showDisp();
+                alert(e);
+            },
+            {
+                id: lkIdHidden.value,
+                look: lkLookPassText.value,
+            }
+            );
+    }
+
+
+
     var editForm = smr.dom.Element('div');
     editForm.element.className = "createForm";
 
