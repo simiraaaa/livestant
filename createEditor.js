@@ -198,4 +198,10 @@ livestant
         id: LIVE_ID,
     });
 
+    var s = window.document.body.style;
+    s.padding = '0';
+    s.margin = '0';
+    s.height = '100%';
+    s.width = "100%";
+
 })(smr, livestant, window, document);

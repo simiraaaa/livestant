@@ -9,6 +9,103 @@
     var message = smr.dom.Element.query('.message');
     var rooms = smr.dom.Element.query('.rooms');
     var createButton = smr.dom.Element.query('.createButton');
+
+    var versionDiv = smr.dom.Element('div');
+    versionDiv.element.className = "createForm";
+
+    versionDiv.create('span').setStyle({
+        fontSize: '24px',
+        fontWeight: 'bold',
+    }).element.textContent = 'runstantのバージョンを選択してください';
+
+    versionDiv.create('hr');
+
+    versionDiv.create('div').setStyle({ margin: '10px' }).create('span').attribute({
+        textContent: 'alpha',
+        className: 'spanButton red',
+    }).onclick = function () {
+        livestant.toAlphaEditor(versionQs);
+    }
+
+    versionDiv.create('div').setStyle({margin:'10px'}).create('span').attribute({
+        textContent: 'beta',
+        className: 'spanButton blue',
+    }).onclick = function () {
+        livestant.toBetaEditor(versionQs);
+    }
+
+    var versionQs = null;
+
+
+    var editForm = smr.dom.Element('div');
+    editForm.element.className = "createForm";
+
+    editForm.create('span').setStyle({
+        fontSize: '24px',
+        fontWeight: 'bold',
+    }).element.textContent = '編集します';
+
+    editForm.create('hr');
+
+    editForm.create('div').element.textContent = '編集パスワード';
+
+
+    var efEditPassText = editForm.create('input').attribute({
+        type: 'text',
+    }).setStyle({
+        width: '50%'
+    });
+    var efIdHidden = editForm.create('input').attribute({
+        type: 'hidden'
+    });
+
+
+
+    var editFormButton = editForm.create('div').create('button').attribute({
+        type: 'button',
+        textContent:'編集'
+    }).on('click', function () {
+        editFormButton.noneDisp();
+        editRoom();
+    });
+
+    function editRoom(popup) {
+        popup = popup === undefined ? true : popup;
+        livestant.editRoom(
+            function (res) {
+                popup && removePopup();
+                popupVersion(efIdHidden.value,res);
+            },
+            function (e) {
+                editFormButton.showDisp();
+                alert(e);
+            },
+            {
+                id: efIdHidden.value,
+                edit: efEditPassText.value,
+            }
+            );
+    }
+
+    function popupEdit(id, free) {
+        editFormButton.showDisp();
+        efEditPassText.value = "";
+        efIdHidden.value = id;
+        free = free === undefined?1:free;
+        if (free) return editRoom(false);
+
+        popup(editForm);
+    }
+
+    function popupVersion(id, qs) {
+        qs.id = id;
+        versionQs = qs;
+        popup(versionDiv);
+    }
+
+
+
+
     var createForm = smr.dom.Element('div');
     createForm.element.className = "createForm";
 
@@ -141,9 +238,6 @@
         blackRect.popup.remove();
     }
 
-    function popupVersion() {
-
-    }
 
 
     var roomList = [];
@@ -175,7 +269,9 @@
             className: 'spanButton' + (editFree ? ' blue' : ''),
         }).setStyle({
             margin: '0 5px'
-        });
+        }).onclick = function () {
+            popupEdit(id, editFree);
+        };
 
         div.create('span').attribute({
             textContent: '閲覧' + (lookFree ? '(Free)' : ''),

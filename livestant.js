@@ -133,7 +133,7 @@ var livestant = livestant || smr.Object();
         safeAddQuery: function (url,data) {
             var qs = {};
             for (var k in data) {
-                if (data[k] !== undefined) qs[k] = data[k];
+                if (data[k] != undefined) qs[k] = data[k];
             }
             for (var k in qs) {
                 url += '?' + queryStringify(qs);
@@ -142,18 +142,18 @@ var livestant = livestant || smr.Object();
             return url;
         },
 
-        toEditor:function toEditor(to,id,edit,url) {
-            if (id === undefined) return alert('idを指定してください');
-            var url = ls.safeAddQuery(to, { id: id, edit: edit, url: url });
+        toEditor: function toEditor(to,qs) {
+            if (qs.id === undefined) return alert('idを指定してください');
+            var url = ls.safeAddQuery(to, qs);
             smr.global.location.href = url + ls.editorHash;
         },
 
-        toAlphaEditor: function toAlphaEditor(id, edit, url) {
-            ls.toEditor(RUNSTANT_ALPHA, id, edit, url);
+        toAlphaEditor: function toAlphaEditor(qs) {
+            ls.toEditor(RUNSTANT_ALPHA, qs);
         },
 
-        toBetaEditor: function toBetaEditor(id, edit, url) {
-            ls.toEditor(RUNSTANT_BETA, id, edit, url);
+        toBetaEditor: function toBetaEditor(qs) {
+            ls.toEditor(RUNSTANT_BETA,qs);
         },
     });
 
