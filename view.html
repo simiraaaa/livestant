@@ -66,6 +66,7 @@
             dataStore.on('send', function (data) {
                 var url = GOOGL + data.value.url;
                 frame.src = url;
+                frame.appendTo();
             });
             
             livestant.getRoomUrl(function (res) {
