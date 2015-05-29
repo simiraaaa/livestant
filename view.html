@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+
+    <title>livestant | view</title>
+    <meta name="description" content="livestant view 閲覧" />
+    <style>
+        html {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        iframe {
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <script src="http://cdn.mlkcca.com/v2.0.0/milkcocoa.js"></script>
+    <script src="https://cdn.rawgit.com/simiraaaa/iroirojs/gh-pages/smr/smr.js"></script>
+    <script src="https://cdn.rawgit.com/simiraaaa/iroirojs/gh-pages/smr/smr.util.js"></script>
+    <script src="https://cdn.rawgit.com/simiraaaa/iroirojs/gh-pages/smr/smr.ajax.js"></script>
+    <script src="https://cdn.rawgit.com/simiraaaa/iroirojs/gh-pages/smr/smr.dom.js"></script>
+    <script src="livestant.js"></script>
+    <script>
+
+        (function (smr,ls,undefined) {
+            var window = smr.global;
+            var document = window.document;
+
+            if (!window.location.search) return toTop('閲覧できません。');
+            var GOOGL = 'http://goo.gl/';
+            
+            var qs = window.location.search.substring(1).split('&');
+            var GET = {};
+            qs.forEach(function (e) {
+                e = e.split('=');
+                GET[e[0]] = e[1];
+            });
+
+            var LOOK_PASS = GET.look;
+            var LIVE_ID = GET.id;
+
+            var frame = smr.dom.Element('iframe');
+            frame.attribute({
+                width: '100%',
+                height: '100%',
+            });
+
+            var milkcocoa = new MilkCocoa("dogia10xa80.mlkcca.com");
+            var SENDTO = 'livestant/' + LIVE_ID + '/' + LOOK_PASS;
+
+            var dataStore = milkcocoa.dataStore(SENDTO);
+            dataStore.on('send', function (data) {
+                var url = GOOGL + data.value.url;
+                frame.src = url;
+            });
+            
+            livestant.getRoomUrl(function (res) {
+                var url = GOOGL + res.url;
+                frame.src = url;
+            },
+            function (e) {
+                toTop(e);
+            });
+
+
+            function toTop(m) {
+                alert(m+'\nトップページへ戻ります');
+                location.href = "http://simiraaaa.github.io/livestant/";
+            }
+
+        })(smr,livestant);
+    </script>
+</body>
+</html>

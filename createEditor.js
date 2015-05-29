@@ -17,10 +17,8 @@ smr.dom
 util
 ajax
 livestant
-
 ÇrunstantÇÃÉRÅ[ÉhÇ≈parentÇ…í«â¡ÇµÇƒÇ¢ÇÈ
 ÇªÇÃÇ†Ç∆ç≈å„Ç…Ç±Ç¢Ç¬Ç™í«â¡Ç≥ÇÍÇÈ
-
 */
 
 
@@ -60,7 +58,7 @@ livestant
     var EDIT_PASS = temp.edit;
     var LOOK_PASS = temp.look;
     var DEFAULT_URL = isAlpha ? 'AeFRmK' : 'JSTAh0';
-    var TARGET_URL = temp.url||null;
+    var TARGET_URL = temp.url || null;
     var LIVE_ID = temp.id;
     var GOOGL = 'http://goo.gl/';
 
@@ -76,7 +74,7 @@ livestant
     var milkcocoa = new MilkCocoa("dogia10xa80.mlkcca.com");
     var SENDTO = 'livestant/' + LIVE_ID + '/' + LOOK_PASS;
 
-    var detaStore = milkcocoa.dataStore(SENDTO);
+    var dataStore = milkcocoa.dataStore(SENDTO);
 
     var parent = window;
     var frameLoaded = false;
@@ -147,7 +145,7 @@ livestant
         });
 
 
-        isBeta &&(window.Main.project.save = function () {
+        isBeta && (window.Main.project.save = function () {
             var t = JSON.stringify(this.data);
             if (this.cache !== t) {
                 this.cache = t;
@@ -181,9 +179,9 @@ livestant
         //shortUrl Çsend milkcocoa
         //goo.glÇÕä‹Ç‹Ç»Ç¢
         function sendUrl(url) {
-            detaStore.send({ url: url });
+            dataStore.send({ url: url });
         }
-        
+
         frameLoaded = true;
     };
 
