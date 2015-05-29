@@ -76,7 +76,7 @@
         livestant.getRoomUrl(
             function (res) {
                 popup && removePopup();
-                location.href = livestant.safeAddQuery('view', {
+                location.href = livestant.safeAddQuery('view.html', {
                     id: lkIdHidden.value,
                     look: res.look,
                     url: res.url
