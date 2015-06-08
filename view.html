@@ -53,6 +53,7 @@
 
             var LOOK_PASS = GET.look;
             var LIVE_ID = GET.id;
+            var LOOK_DEFAULT_URL = GET.url;
 
             var frame = smr.dom.Element('iframe');
             frame.attribute({
@@ -75,6 +76,14 @@
                 frame.appendTo();
             },
             function (e) {
+                var useDefault = LOOK_DEFAULT_URL ?  '\nURLクエリパラメータから読み込みます。':false;
+                if (useDefault) {
+                    alert(e + useDefault);
+                    var url = GOOGL + LOOK_DEFAULT_URL;
+                    frame.element.src = url;
+                    frame.appendTo();
+                    return;
+                }
                 toTop(e);
             }, {id:LIVE_ID,look:LOOK_PASS});
 

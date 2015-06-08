@@ -11,6 +11,8 @@
     var createButton = smr.dom.Element.query('.createButton');
 
     var versionDiv = smr.dom.Element('div');
+    versionDiv.element.tabIndex = '-1';
+    versionDiv.style.outline = 'none';
     versionDiv.element.className = "createForm";
 
     versionDiv.create('span').setStyle({
@@ -21,14 +23,14 @@
     versionDiv.create('hr');
 
     versionDiv.create('div').setStyle({ margin: '10px' }).create('span').attribute({
-        textContent: 'alpha',
+        textContent: '(a): alpha',
         className: 'spanButton red',
     }).onclick = function () {
         livestant.toAlphaEditor(versionQs);
     }
 
     versionDiv.create('div').setStyle({ margin: '10px' }).create('span').attribute({
-        textContent: 'beta',
+        textContent: '(b): beta',
         className: 'spanButton blue',
     }).onclick = function () {
         livestant.toBetaEditor(versionQs);
@@ -36,6 +38,20 @@
 
     var versionQs = null;
 
+
+    function enterClick(div, button) {
+        div.onkeydown = function (e) {e.which===13 && button.element.click(); };
+    }
+
+    versionDiv.onkeydown = function (e) {
+        var k = e.which;
+        if (65 === k) {
+            livestant.toAlphaEditor(versionQs);
+        } else if (66 === k) {
+            livestant.toBetaEditor(versionQs);
+        }
+    };
+    
 
 
     var lookForm = smr.dom.Element('div');
@@ -102,6 +118,8 @@
         if (free) return lookRoom(false);
 
         popup(lookForm);
+
+        lkLookPassText.element.focus();
     }
 
 
@@ -163,12 +181,14 @@
         if (free) return editRoom(false);
 
         popup(editForm);
+        efEditPassText.element.focus();
     }
 
     function popupVersion(id, qs) {
         qs.id = id;
         versionQs = qs;
         popup(versionDiv);
+        versionDiv.element.focus();
     }
 
 
@@ -300,6 +320,7 @@
         editPassText.value = "";
         titleText.value = "";
         popup(createForm);
+        titleText.element.focus();
     }
     function removePopup() {
         blackRect.remove();
@@ -410,6 +431,7 @@
         deletePassText.value = "";
         deleteIdHidden.value = id;
         popup(deleteForm);
+        deletePassText.element.focus();
     }
 
     function deleteRoom(id, edit, success, error) {
@@ -428,6 +450,11 @@
     }
 
     getRooms();
+
+    enterClick(createForm, submitButton);
+    enterClick(lookForm, lookFormButton);
+    enterClick(editForm, editFormButton);
+    enterClick(deleteForm, deleteButton);
 
 
 })(window, smr, livestant);
